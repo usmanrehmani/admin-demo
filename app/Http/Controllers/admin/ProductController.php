@@ -10,6 +10,10 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
+    public function dashboard(){
+        $categories = Category::all();
+        return view('admin.pages.dashboard',compact('categories'));
+    }
     public function index()
     {
         $products = Product::all();

@@ -14,10 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('admin.pages.dashboard');
-});
 
+Route::get('/',[ProductController::class,'dashboard']);
 Route::get('products',[ProductController::class,'index'])->name('products');
 Route::post('product-store',[ProductController::class,'store']);
 Route::post('product-update/{id}',[ProductController::class,'update']);
