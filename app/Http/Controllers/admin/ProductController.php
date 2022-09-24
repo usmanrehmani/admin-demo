@@ -7,6 +7,9 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Models\Product;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
 {
@@ -18,7 +21,7 @@ class ProductController extends Controller
     }
     public function index()
     {
-        $products = Product::all();
+        $products = Product::with('productCategory')->get();
         $categories = Category::all();
         // $products = Product::all();
         return view('admin.pages.products', compact('products', 'categories'));
@@ -26,30 +29,38 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        // ($request)->dd();
-        $request->validate([
-            'name'    => 'required',
-            'image'   => 'required',
-            'category'  =>  'required',
-            'description' => 'required',
-        ]);
+        try{
 
-        $product = new Product;
-        $product->name = $request->input('name');
-        $product->category_id = $request->input('category');
-        $product->description = $request->input('description');
+            $request->validate([
+                'name'    => 'required',
+                'image'   => 'required',
+                'category'  =>  'required',
+                'description' => 'required',
+            ]);
+    
+            $product = new Product;
+            $product->name = $request->input('name');
+            $product->category_id = $request->input('category');
+            $product->description = $request->input('description');
+    
+            if ($request->hasfile('image')) {
+                $file = $request->file('image');
+                $extenstion = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extenstion;
+                $file->move('uploads/product-imgs/', $filename);
+                $product->image = $filename;
+                // dd($filename);
+            }
+    
+    
+            $product->save();
+        }catch(Exception $e){
+            return response()->json([
+        'message' => $e->getMessage(),
 
-        if ($request->hasfile('image')) {
-            $file = $request->file('image');
-            $extenstion = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extenstion;
-            $file->move('uploads/product-imgs/', $filename);
-            $product->image = $filename;
-            // dd($filename);
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-
-        $product->save();
+        
     }
 
     public function update(Request $request, $id)
