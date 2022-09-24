@@ -12,6 +12,8 @@ class ProductController extends Controller
 {
     public function dashboard(){
         $categories = Category::all();
+    //     $relation=Category::with('category')->get();
+    //    return $relation;
         return view('admin.pages.dashboard',compact('categories'));
     }
     public function index()
@@ -34,7 +36,7 @@ class ProductController extends Controller
 
         $product = new Product;
         $product->name = $request->input('name');
-        $product->category = $request->input('category');
+        $product->category_id = $request->input('category');
         $product->description = $request->input('description');
 
         if ($request->hasfile('image')) {
@@ -63,7 +65,7 @@ class ProductController extends Controller
 
         $product = Product::find($id);
         $product->name = $request->input('name');
-        $product->category = $request->input('category');
+        $product->category_id = $request->input('category');
         $product->description = $request->input('description');
       
         if ($request->hasfile('image')) {

@@ -152,7 +152,7 @@
                             <label for="name">Category</label>
                             <select name="category" class="form-control input-lg">
                                 @foreach ($categories as $category)
-                                <option value="{{$category->name}}">{{$category->name}}</option>
+                                <option value="{{$category->id}}">{{$category->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -205,7 +205,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label>Category</label>
-                            <select name="category" id="category" class="form-control input-lg">
+                            <select name="category" value="{{$category->name}}" id="category" class="form-control input-lg">
                                 @foreach ($categories as $category)
                                 <option value="{{$category->name}}">{{$category->name}}</option>
                                 @endforeach

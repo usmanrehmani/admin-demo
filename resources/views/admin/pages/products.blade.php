@@ -1,6 +1,23 @@
 @section('title')
   <title>Dashboard</title>
+<style>
+	.dataTables_filter{
+		padding-right: 15px;
+	}
+	.dataTables_length{
+		padding-left: 15px;
+	}
+	.pagination{
+		padding-right: 15px;
+	}
 
+	.dataTables_info{
+		padding-left: 15px!important;
+	}
+	.table{
+		padding: 15px;
+	}
+</style>
 @stop
 @extends('admin.layout.master')
 
@@ -31,7 +48,7 @@
       <td>{{$product->id}}</td>
 			<td>{{$product->name}}</td>
 			<td><img style="height: 50px;width:50px" src="uploads/product-imgs/{{ $product->image}}"></img></td>
-			<td>{{$product->category}}</td>
+			<td>{{$product->category_id}}</td>
 			<td>{{$product->description}}</td>
       <td><button class="btn  btn-success editbtn">Edit</button> <button class="btn btn-danger deletebtn">Delete</button></td>
 	
