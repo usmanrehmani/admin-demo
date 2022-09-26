@@ -6,12 +6,14 @@ let mix  = require('laravel-mix');
 
 
 
+mix.css('resources/css/app.css', 'public/css');
+ mix.js('resources/js/app.js', 'public/js');
 
-
-mix.js('resources/js/scripts.js', 'public/js')
-   .js('resources/js/bundle.js', 'public/js')
-   .js('resources/js/charts/gd-default.js', 'public/js')
-   .postCss('resources/css/theme.css', 'public/css')
-   .postCss('resources/css/dashlite.css', 'public/css');
+ mix.styles([
+     'resources/css/admin/*.css',
+ ], 'public/css/app.css')
+ mix.scripts([
+     'resources/js/admin/*.js',
+ ], 'public/js/app.js');
 
    

@@ -146,11 +146,11 @@
                         <div class="form-group col-md-6">
                             <label for="name">Name</label>
                             <input type="text" class="form-control" name="name" aria-describedby="emailHelp" placeholder="Product Name">
-                            <!-- <small id="emailHelp" class="form-text text-muted">Your information is safe with us.</small> -->
                         </div>
                         <div class="form-group col-md-6">
                             <label for="name">Category</label>
                             <select name="category" class="form-control input-lg">
+                            <option value="0" selected disabled>--- Select Category ---</option>
                                 @foreach ($categories as $category)
                                 <option value="{{$category->id}}">{{$category->category_name}}</option>
                                 @endforeach
@@ -191,6 +191,7 @@
                 <div>{{$error}}</div>
                 @endforeach
                 @endif
+                
                 <form id="editformID">
 
                     <!-- {{ method_field('put') }} -->
@@ -205,16 +206,16 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label>Select Category</label>
-                            <select  name="category" id="category" class="form-control input-lg">
-                               
+                            <select name="category"  class="form-control input-lg">
+                            <!-- <option value="0" selected disabled>--- Select City ---</option> -->
                                 @foreach ($categories as $category)
-                                <option value="{{$category->id}}">{{$category->category_name}}</option>
+                                <option id="category" value="{{$category->id}}" {{ $category->id === $product->category_id ? ' selected' : '' }}>{{$category->category_name}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label>Image</label>
-                            <input type="file" name="image" id="image" value="" class="form-control">
+                            <input type="file" name="image" id="image"  value="{{$product->image}}" class="form-control">
                         </div>
 
                         <div class="form-group col-md-6">
@@ -318,11 +319,11 @@
             error: function(error) {
                 console.log(error)
                 Swal.fire({
-                        title: 'error',
-                        text: error.responseJSON.message,
-                        icon: 'error',
-                        confirmButtonText: 'Okay'
-                    });
+                    title: 'error',
+                    text: error.responseJSON.message,
+                    icon: 'error',
+                    confirmButtonText: 'Okay'
+                });
             }
         });
     });
@@ -343,7 +344,7 @@
             console.log(data);
             $('#id').val(data[0]);
             $('#name').val(data[1]);
-            $('#image').val(data[2]);
+            $('#image').val(data[2]); 
             $('#category').val(data[3]);
             $('#description').val(data[4]);
         });
@@ -401,36 +402,38 @@
             var formData = new FormData(this);
 
             $.ajax({
-                type: "POST",
-                url: "product-store",
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    console.log(response)
-                    $('#product').modal('hide')
+                    type: "POST",
+                    url: "product-store",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        console.log(response)
+                        $('#product').modal('hide')
 
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'Product Created Successfully',
-                        icon: 'success',
-                        confirmButtonText: 'Okay'
-                    });
-                },
+                        $('#product_table').DataTable().ajax.reload();
+
+                        // Swal.fire({
+                        //     title: 'Success',
+                        //     text: 'Product Created Successfully',
+                        //     icon: 'success',
+                        //     confirmButtonText: 'Okay'
+                        // });
+                    },
 
                     error: function(error) {
-                    console.log(error)
-                    Swal.fire({
-                        title: 'error',
-                        text: error.responseJSON.message,
-                        icon: 'error',
-                        confirmButtonText: 'Okay'
-                    });
-                }
+                        console.log(error)
+                        Swal.fire({
+                            title: 'error',
+                            text: error.responseJSON.message,
+                            icon: 'error',
+                            confirmButtonText: 'Okay'
+                        });
+                    }
 
                 },
 
-              
+
             );
         });
     });

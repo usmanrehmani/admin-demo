@@ -14,7 +14,7 @@
 
 <div class="card card-preview">
 	<div class="card-inner">
-		<table class="datatable-init nowrap table">
+		<table class="datatable-init nowrap table" id="product_table">
 			<thead>
 				<tr>
 					<th>#ID</th>
@@ -27,7 +27,7 @@
 				</tr>
 			</thead>
 			<tbody>
-
+	
 				@foreach($products as $product)
 				<tr>
 					<td>{{$product->id}}</td>

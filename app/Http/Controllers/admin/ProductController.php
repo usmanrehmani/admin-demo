@@ -19,6 +19,7 @@ class ProductController extends Controller
     //    return $relation;
         return view('admin.pages.dashboard',compact('categories'));
     }
+    
     public function index()
     {
         $products = Product::with('productCategory')->get();
@@ -33,7 +34,7 @@ class ProductController extends Controller
 
             $request->validate([
                 'name'    => 'required',
-                'image'   => 'required',
+                'image'   => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'category'  =>  'required',
                 'description' => 'required',
             ]);
@@ -69,7 +70,7 @@ class ProductController extends Controller
      
         $request->validate([
             'name'    => 'required',
-            'image'   => 'required',
+            'image'   => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'category'  =>  'required',
             'description' => 'required',
         ]);
@@ -90,6 +91,8 @@ class ProductController extends Controller
             $filename = time() . '.' . $extenstion;
             $file->move('uploads/product-imgs/', $filename);
             $product->image = $filename;
+        }else{
+
         }
 
 
